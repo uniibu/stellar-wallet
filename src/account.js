@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'production';
 const StellarSdk = require('stellar-sdk');
 const fs = require('fs-extra');
+const path = require('path');
 const { genKey } = require('./helpers');
 const { getter } = require('./request');
 const { getLedger } = require('./db');
@@ -11,7 +12,7 @@ async function generateConfig() {
     pairObject.horizonServer = process.env.NODE_ENV !== 'production' ? 'https://horizon-testnet.stellar.org' : 'https://horizon.stellar.org';
     pairObject.key = genKey()
     pairObject.cursor = getLedger()
-    await fs.writeJson('../keys.json', pairObject, { spaces: 2 })
+    await fs.outputJson(path.resolve(__dirname, '../keys.json'), pairObject, { spaces: 2 })
   }
 
   if (process.env.NODE_ENV !== 'production') {

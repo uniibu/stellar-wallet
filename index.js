@@ -16,7 +16,7 @@ const initCheck = async () => {
     config = await account();
   } else {
     logger.info('Keys found. Processing key pair...');
-    config = require('./config')
+    config = await fs.readJson('./keys.json')
     config.cursor = getLedger()
   }
   const infolog = boxen(`Environment: ${process.env.NODE_ENV}
