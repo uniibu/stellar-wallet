@@ -1,0 +1,6 @@
+keys.json
+log.pid
+src/db/db.json
+logs/
+.env
+bitsler_stellar.sh
