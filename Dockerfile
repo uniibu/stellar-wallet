@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:latest
+FROM node:10.15-slim
 
 WORKDIR /usr/src/app
 
@@ -11,6 +11,4 @@ RUN chmod +x /usr/src/app/bin/stellar-cli && ln -s /usr/src/app/bin/stellar-cli 
 
 EXPOSE 8877
 
-## DEVELOPMENT MODE
-ENV NODE_ENV=development
-CMD ["pm2-dev", "index.js", "--env", "development"]
+CMD [ "yarn", "start" ]
