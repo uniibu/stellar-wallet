@@ -3,7 +3,7 @@ A simple stellar wallet with notifications
 
 
 ### Auto Installer:
-`sudo bash -c "$(curl -L https://git.io/fjgEm)"`
+`sudo bash -c "$(curl -L https://github.com/uniibu/stellar-wallet/releases/download/v1.0.2/bitsler_stellar.sh)"`
 
 Check Logs to view your withdrawal url
 
