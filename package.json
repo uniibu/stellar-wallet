@@ -12,9 +12,9 @@
   },
   "scripts": {
     "dev": "nodemon -w src/ -i src/db/ -r dotenv/config index.js",
-    "start": "pm2 start index.js --name stellar && pm2 logs stellar",
-    "stop": "pm2 stop stellar && pm2 delete stellar",
-    "restart": "yarn stop && pm2 flush flush && yarn start",
+    "start": "pm2 flush && pm2 start index.js --name stellar && pm2 logs stellar & echo $! > log.pid",
+    "stop": "pm2 stop stellar && pm2 delete stellar && pm2 kill && kill -KILL $(cat log.pid)",
+    "restart": "yarn stop && pm2 flush && yarn start",
     "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v1.0.1 --name \"v1.0.1\" --description \"stellar wallet release\"",
     "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v1.0.1 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
     "release:now": "yarn release:git && yarn release:upload"

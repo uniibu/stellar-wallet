@@ -7,3 +7,4 @@ node_modules
 keys.json
 logs/
 src/db/db.json
+log.pid

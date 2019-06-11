@@ -3,8 +3,10 @@
 const program = require('commander');
 const path = require('path');
 const p = require('phin');
+const { exec } = require('child_process');
 const config = require(path.resolve(__dirname, '../config'));
 const pkgjson = require(path.resolve(__dirname, '../package.json'));
+const rootPath = path.resolve(__dirname, '../')
 
 const reqLocal = async (route, data) => {
   try {
@@ -73,9 +75,24 @@ program
       console.log('Internal Error');
     }
   });
+program
+  .command('stop')
+  .description('Gracefully stops the stellar node')
+  .action(async () => {
+    exec('yarn stop', { cwd: rootPath }, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+    });
+  });
+
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
 program
   .command('*')
   .action(() => {
