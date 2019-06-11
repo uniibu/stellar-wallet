@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'production';
 const StellarSdk = require('stellar-sdk');
 const fs = require('fs-extra');
 const { genKey } = require('./helpers');
