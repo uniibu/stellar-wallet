@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "nodemon -w src/ -i src/db/ -r dotenv/config index.js",
-    "start": "pm2 start index.js --name stellar",
+    "start": "pm2 start index.js --name stellar && pm2 logs stellar",
     "stop": "pm2 stop stellar && pm2 delete stellar",
     "restart": "yarn stop && pm2 flush flush && yarn start",
     "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v1.0.1 --name \"v1.0.1\" --description \"stellar wallet release\"",
