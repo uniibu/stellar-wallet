@@ -17,7 +17,7 @@
     "restart": "yarn stop && pm2 flush flush && yarn start",
     "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v1.0.0 --name \"v1.0.0\" --description \"stellar wallet release\"",
     "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v1.0.0 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
-    "release": "yarn release:git && yarn release:upload"
+    "release:now": "yarn release:git && yarn release:upload"
   },
   "dependencies": {
     "boxen": "^4.0.0",
