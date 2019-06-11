@@ -1,0 +1,39 @@
+{
+  "name": "stellar-wallet",
+  "version": "1.0.0",
+  "description": "stellar wallet",
+  "main": "index.js",
+  "repository": "https://github.com/uniibu/stellar-wallet",
+  "author": "Uni Sayo<unibtc@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "bin": {
+    "stellar-cli": "./bin/stellar-cli"
+  },
+  "scripts": {
+    "dev": "nodemon -w src/ -i src/db/ -r dotenv/config index.js",
+    "start": "pm2 start index.js --name stellar",
+    "stop": "pm2 stop stellar && pm2 delete stellar",
+    "restart": "yarn stop && pm2 flush flush && yarn start"
+  },
+  "dependencies": {
+    "boxen": "^4.0.0",
+    "commander": "^2.20.0",
+    "dotenv": "^8.0.0",
+    "envalid": "^5.0.0",
+    "fs-extra": "^8.0.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-bouncer": "^6.0.4",
+    "koa-router": "^7.4.0",
+    "lowdb": "^1.0.0",
+    "phin": "^3.4.0",
+    "queuing": "^1.2.0",
+    "stellar-sdk": "^1.0.2",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
