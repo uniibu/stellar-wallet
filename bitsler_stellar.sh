@@ -48,7 +48,7 @@ docker run -v stellar-data:/usr/src/app --name=stellar-node -d \
       -v $HOME/.stellar/db.json:/usr/src/app/src/db/db.json \
       -v $HOME/.stellar/keys.json:/usr/src/app/src/keys.json \
       -v $HOME/.stellar/logs:/usr/src/app/logs \
-      unibtc/stellar:latest
+      unibtc/stellar:1.0.6
 
 cat >/usr/bin/stellar-cli <<'EOL'
 #!/usr/bin/env bash
