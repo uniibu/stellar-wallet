@@ -46,7 +46,6 @@ docker run -v stellar-data:/usr/src/app --name=stellar-node -d \
       -p 8877:8877 \
       -v $HOME/.stellar/xlm.env:/usr/src/app/.env \
       -v $HOME/.stellar/db.json:/usr/src/app/src/db/db.json \
-      -v $HOME/.stellar/keys.json:/usr/src/app/src/keys.json \
       -v $HOME/.stellar/logs:/usr/src/app/logs \
       unibtc/stellar:1.0.6
 
@@ -71,7 +70,6 @@ docker run -v stellar-data:/usr/src/app --name=stellar-node -d \
       -p 8877:8877 \
       -v $HOME/.stellar/xlm.env:/usr/src/app/.env \
       -v $HOME/.stellar/db.json:/usr/src/app/src/db/db.json \
-      -v $HOME/.stellar/keys.json:/usr/src/app/src/keys.json \
       -v $HOME/.stellar/logs:/usr/src/app/logs \
       unibtc/stellar:latest
 EOL

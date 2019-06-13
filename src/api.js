@@ -67,7 +67,7 @@ router.post('/withdraw', async (ctx) => {
   logger.info('RPC /withdraw was called:', ctx.request.body);
   ctx.validateBody('amount').required('Missing amount').toDecimal('Invalid amount').tap(n => truncateSeven(n))
   ctx.validateBody('address').required('Missing address').isString().trim();
-  ctx.validateBody('memo').optional().toInt('Invalid memo');
+  ctx.validateBody('memo').optional().isString().trim().isAlphanumeric()
   ctx.check(ctx.vals.amount && ctx.vals.amount >= 0.000001, 'Invalid amount');
   ctx.check(ctx.vals.address, 'Invalid address');
   const validAddress = await validate(ctx.vals.address);

@@ -43,7 +43,7 @@ const parseTx = (o, filter) => {
   txObj.id = o.hash;
   txObj.hash = o.hash;
   txObj.from = tx.source;
-  txObj.memo = Number(o.memo) || 0;
+  txObj.memo = o.memo || '0';
   txObj.ledger = o.ledger_attr || o.ledger;
   return txObj;
 }
@@ -55,18 +55,18 @@ exports.listTx = async (limit, filter) => {
   return account
 }
 
-exports.withdraw = async (amount, address, memo = 0) => {
+exports.withdraw = async (amount, address, memo = '0') => {
   const account = await server.loadAccount(sourcePublicKey);
   const fee = await server.fetchBaseFee();
   const transaction = new StellarSdk.TransactionBuilder(account, { fee })
-    .addOperation(StellarSdk.Operation.payment({
-      destination: address,
-      asset: StellarSdk.Asset.native(),
-      amount: amount.toFixed(7),
-    }))
-    .setTimeout(30)
-    .addMemo(StellarSdk.Memo.text(memo.toString()))
-    .build();
+  .addOperation(StellarSdk.Operation.payment({
+    destination: address,
+    asset: StellarSdk.Asset.native(),
+    amount: amount.toFixed(7),
+  }))
+  .setTimeout(30)
+  .addMemo(StellarSdk.Memo.text(memo))
+  .build();
   transaction.sign(sourceKeypair);
   logger.info(`sending withdrawal ${address} ${amount} XLM`);
   try {
