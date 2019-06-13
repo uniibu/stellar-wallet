@@ -3,7 +3,6 @@ const logger = require('./logger');
 const config = require('../config');
 
 const sourceKeypair = StellarSdk.Keypair.fromSecret(config.secret);
-const sourcePublicKey = sourceKeypair.publicKey();
 
 const server = new StellarSdk.Server(config.horizonServer);
 
@@ -14,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 exports.balance = async () => {
-  const account = await server.loadAccount(sourcePublicKey);
+  const account = await server.loadAccount(config.public);
   const xrp = account.balances.filter(o => o.asset_type === 'native')[0];
   if (xrp && xrp.balance) {
     return xrp.balance
@@ -48,7 +47,7 @@ const parseTx = (o, filter) => {
   return txObj;
 }
 exports.listTx = async (limit, filter) => {
-  let account = await server.transactions().forAccount(sourcePublicKey).limit(limit).order('desc').call()
+  let account = await server.transactions().forAccount(config.public).limit(limit).order('desc').call()
   account = account.records.map(o => {
     return parseTx(o, filter);
   }).filter(Boolean)
@@ -56,17 +55,17 @@ exports.listTx = async (limit, filter) => {
 }
 
 exports.withdraw = async (amount, address, memo = '0') => {
-  const account = await server.loadAccount(sourcePublicKey);
+  const account = await server.loadAccount(config.public);
   const fee = await server.fetchBaseFee();
   const transaction = new StellarSdk.TransactionBuilder(account, { fee })
-  .addOperation(StellarSdk.Operation.payment({
-    destination: address,
-    asset: StellarSdk.Asset.native(),
-    amount: amount.toFixed(7),
-  }))
-  .setTimeout(30)
-  .addMemo(StellarSdk.Memo.text(memo))
-  .build();
+    .addOperation(StellarSdk.Operation.payment({
+      destination: address,
+      asset: StellarSdk.Asset.native(),
+      amount: amount.toFixed(7),
+    }))
+    .setTimeout(30)
+    .addMemo(StellarSdk.Memo.text(memo))
+    .build();
   transaction.sign(sourceKeypair);
   logger.info(`sending withdrawal ${address} ${amount} XLM`);
   try {

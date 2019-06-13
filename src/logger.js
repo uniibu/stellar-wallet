@@ -35,7 +35,7 @@ wrap.boxen = (args) => {
 };
 wrap.error = (args) => {
 
-  logger.error(`[WORKER ${workerId}]` + args.stack || args.message);
+  logger.error(`[WORKER ${workerId}]` + (args.stack || args.message || args));
 };
 wrap.warn = (...args) => {
   args = args.map(a => typeof a !== 'string' ? JSON.stringify(a) : a);
