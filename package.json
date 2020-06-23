@@ -32,7 +32,7 @@
     "lowdb": "^1.0.0",
     "phin": "^3.4.0",
     "queuing": "^1.2.0",
-    "stellar-sdk": "^1.0.2",
+    "stellar-sdk": "^3.1.1",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.9.0"
   },

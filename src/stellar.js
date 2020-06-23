@@ -5,18 +5,18 @@ const config = require('../config');
 const sourceKeypair = StellarSdk.Keypair.fromSecret(config.secret);
 
 const server = new StellarSdk.Server(config.horizonServer);
-
+let NETWORK;
 if (process.env.NODE_ENV === 'development') {
-  StellarSdk.Network.useTestNetwork();
+  NETWORK = StellarSdk.Networks.TESTNET
 } else {
-  StellarSdk.Network.usePublicNetwork();
+  NETWORK = StellarSdk.Networks.PUBLIC
 }
 
 exports.balance = async () => {
   const account = await server.loadAccount(config.public);
-  const xrp = account.balances.filter(o => o.asset_type === 'native')[0];
-  if (xrp && xrp.balance) {
-    return xrp.balance
+  const xlm = account.balances.filter(o => o.asset_type === 'native')[0];
+  if (xlm && xlm.balance) {
+    return xlm.balance
   }
 }
 
@@ -25,7 +25,7 @@ exports.validate = async (address) => {
   return r;
 }
 const parseTx = (o, filter) => {
-  const tx = new StellarSdk.Transaction(o.envelope_xdr);
+  const tx = new StellarSdk.Transaction(o.envelope_xdr, NETWORK);
   let txObj = {};
   for (const op of tx.operations) {
     if (filter === 'deposit' && op.destination !== config.public) continue;
@@ -57,15 +57,15 @@ exports.listTx = async (limit, filter) => {
 exports.withdraw = async (amount, address, memo = '0') => {
   const account = await server.loadAccount(config.public);
   const fee = await server.fetchBaseFee();
-  const transaction = new StellarSdk.TransactionBuilder(account, { fee })
-    .addOperation(StellarSdk.Operation.payment({
-      destination: address,
-      asset: StellarSdk.Asset.native(),
-      amount: amount.toFixed(7),
-    }))
-    .setTimeout(30)
-    .addMemo(StellarSdk.Memo.text(memo))
-    .build();
+  const transaction = new StellarSdk.TransactionBuilder(account, { fee, networkPassphrase: NETWORK })
+  .addOperation(StellarSdk.Operation.payment({
+    destination: address,
+    asset: StellarSdk.Asset.native(),
+    amount: amount.toFixed(7),
+  }))
+  .setTimeout(30)
+  .addMemo(StellarSdk.Memo.text(memo))
+  .build();
   transaction.sign(sourceKeypair);
   logger.info(`sending withdrawal ${address} ${amount} XLM`);
   try {
