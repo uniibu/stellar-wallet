@@ -11,21 +11,26 @@ module.exports = (config) => {
         if (txResponse.successful === true) {
           const txObj = {};
           const tx = new StellarSdk.Transaction(txResponse.envelope_xdr, StellarSdk.Networks.PUBLIC);
+          for (const op of tx._operations) {
 
-          for (const op of tx.operations) {
             if (op.destination === config.public && op.type === 'payment' && op.asset.code === 'XLM') {
               txObj.amount = op.amount;
               txObj.to = op.destination;
             }
           };
+          txObj.hash = txResponse.hash;
+          txObj.ledger = txResponse.ledger_attr;
           if (!txObj.amount || !txObj.to) {
+            // store ledger every 25 blocks
+            if (txObj.ledger % 25 == 0) {
+              logger.info("Current Block:", txObj.ledger);
+              storeTx(txObj, true);
+            }
             return;
           }
-          txObj.hash = txResponse.hash;
           txObj.from = tx.source;
           txObj.memo = Number(txResponse.memo) || 0;
-          txObj.ledger = txResponse.ledger_attr;
-          storeTx(txObj);
+          storeTx(txObj, false);
         }
       }
     });

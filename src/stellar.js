@@ -27,7 +27,7 @@ exports.validate = async (address) => {
 const parseTx = (o, filter) => {
   const tx = new StellarSdk.Transaction(o.envelope_xdr, NETWORK);
   let txObj = {};
-  for (const op of tx.operations) {
+  for (const op of tx._operations) {
     if (filter === 'deposit' && op.destination !== config.public) continue;
     if (filter === 'withdraw' && op.destination === config.public) continue;
     if (op.type === 'payment' && op.asset.code === 'XLM') {
@@ -58,14 +58,14 @@ exports.withdraw = async (amount, address, memo = '0') => {
   const account = await server.loadAccount(config.public);
   const fee = await server.fetchBaseFee();
   const transaction = new StellarSdk.TransactionBuilder(account, { fee, networkPassphrase: NETWORK })
-  .addOperation(StellarSdk.Operation.payment({
-    destination: address,
-    asset: StellarSdk.Asset.native(),
-    amount: amount.toFixed(7),
-  }))
-  .setTimeout(30)
-  .addMemo(StellarSdk.Memo.text(memo))
-  .build();
+    .addOperation(StellarSdk.Operation.payment({
+      destination: address,
+      asset: StellarSdk.Asset.native(),
+      amount: amount.toFixed(7),
+    }))
+    .setTimeout(30)
+    .addMemo(StellarSdk.Memo.text(memo))
+    .build();
   transaction.sign(sourceKeypair);
   logger.info(`sending withdrawal ${address} ${amount} XLM`);
   try {

@@ -11,4 +11,4 @@ RUN chmod +x /usr/src/app/bin/stellar-cli && ln -s /usr/src/app/bin/stellar-cli 
 
 EXPOSE 8877
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:docker" ]

@@ -30,6 +30,7 @@ exports.lock = (str) => {
   fs.ensureFileSync(lockFileRsolve(str));
 };
 exports.unlock = (str) => {
+  console.log(lockFileRsolve(str));
   fs.removeSync(lockFileRsolve(str));
 };
 exports.isLock = (str) => {
