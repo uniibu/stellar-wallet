@@ -41,6 +41,17 @@ program
     }
   });
 program
+  .command('getBlockNumber')
+  .description('Get current Block number')
+  .action(async () => {
+    const r = await reqLocal('blocknumber');
+    if (r.body.success) {
+      console.log(`Current Block: ${r.body.block}`);
+    } else {
+      console.log('Internal Error');
+    }
+  });
+program
   .command('validateAddress <address>')
   .description('Validates if an address format is correct and active')
   .action(async address => {

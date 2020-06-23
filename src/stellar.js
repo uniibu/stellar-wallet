@@ -55,16 +55,21 @@ exports.listTx = async (limit, filter) => {
 }
 
 exports.withdraw = async (amount, address, memo = '0') => {
+  memo = StellarSdk.Memo.text(memo);
   const account = await server.loadAccount(config.public);
-  const fee = await server.fetchBaseFee();
-  const transaction = new StellarSdk.TransactionBuilder(account, { fee, networkPassphrase: NETWORK })
+  let fee;
+  try {
+    fee = await server.fetchBaseFee();
+  } catch (_) {
+    fee = StellarSdk.BASE_FEE;
+  }
+  const transaction = new StellarSdk.TransactionBuilder(account, { fee, memo, networkPassphrase: NETWORK })
     .addOperation(StellarSdk.Operation.payment({
       destination: address,
       asset: StellarSdk.Asset.native(),
       amount: amount.toFixed(7),
     }))
     .setTimeout(30)
-    .addMemo(StellarSdk.Memo.text(memo))
     .build();
   transaction.sign(sourceKeypair);
   logger.info(`sending withdrawal ${address} ${amount} XLM`);

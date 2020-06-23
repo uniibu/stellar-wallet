@@ -7,6 +7,8 @@ const router = new Router();
 const config = require('../config');
 const { truncateSeven, hideKey } = require('./helpers');
 const { balance, validate, listTx, withdraw } = require('./stellar');
+const { getLedger } = require('./src/db');
+
 app.use(
   require('koa-bodyparser')({
     extendTypes: {
@@ -40,6 +42,11 @@ router.use(async (ctx, next) => {
   ctx.request.query.key = hideKey(ctx.request.query.key)
   delete ctx.vals.key
   await next();
+});
+router.get('/blocknumber', async ctx => {
+  logger.info('RPC /blocknumber was called');
+  const block = getLedger();
+  ctx.body = { success: true, block };
 });
 router.get('/balance', async ctx => {
   logger.info('RPC /balance was called', ctx.request.query);
