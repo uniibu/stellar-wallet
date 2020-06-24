@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "nodemon -w src/ -i src/db/ -r dotenv/config index.js",
-    "start:docker": "pm2-runtime start index.js --name stellar --raw --watch",
+    "start:docker": "pm2-runtime start index.js --name stellar --raw",
     "start": "pm2 flush && pm2 start index.js --name stellar && pm2 logs stellar",
     "stop": "pm2 stop stellar && pm2 delete stellar && pm2 kill",
     "restart": "yarn stop && pm2 flush && yarn start",
