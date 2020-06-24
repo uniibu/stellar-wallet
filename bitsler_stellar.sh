@@ -60,18 +60,26 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be ran as root or sudo" 1>&2
    exit 1
 fi
+
+VERSION="${1:-latest}"
+shift
+
 echo "Updating stellar..."
-sudo docker stop stellar-node
-sudo docker rm stellar-node
-sudo rm -rf ~/docker/volumes/stellar-data
-sudo docker volume rm stellar-data
-sudo docker pull unibtc/stellar:latest
+docker stop stellar-node || true
+docker wait stellar-node || true
+docker pull unibtc/stellar:$VERSION
+sudo docker rm stellar-node || true
+echo "Running new stellar-node container"
+
 docker run -v stellar-data:/usr/src/app --name=stellar-node -d \
       -p 8877:8877 \
       -v $HOME/.stellar/xlm.env:/usr/src/app/.env \
       -v $HOME/.stellar/db.json:/usr/src/app/src/db/db.json \
       -v $HOME/.stellar/logs:/usr/src/app/logs \
-      unibtc/stellar:latest
+      unibtc/stellar:$VERSION $@
+
+echo "Stellar successfully updated and started"
+echo ""
 EOL
 
 cat >/usr/bin/stellar-rm <<'EOL'
