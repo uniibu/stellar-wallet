@@ -7,7 +7,7 @@ const router = new Router();
 const config = require('../config');
 const { truncateSeven, hideKey } = require('./helpers');
 const { balance, validate, listTx, withdraw } = require('./stellar');
-const { getLedger } = require('./src/db');
+const { getLedger } = require('./db');
 
 app.use(
   require('koa-bodyparser')({

@@ -26,7 +26,6 @@ const initCheck = async () => {
         Current Block: ${ config.cursor}
         Key: ${ config.key}`.replace(/ {2,}/g, ''), { padding: 1, margin: 1, borderStyle: 'double' });
   infolog.split('\n').forEach(logger.boxen);
-  require('./src/db').cleanLock();
   return config;
 }
 

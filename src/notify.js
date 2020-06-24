@@ -20,7 +20,7 @@ const got = async (method, uri, payload) => {
     if (r.statusCode !== 200) {
       if (opts.url !== 'https://canihazip.com/s') {
         logger.error(`error sending notification statusCode: ${r.statusCode}. retrying...`);
-       }
+      }
       return false;
     }
     return r.body || true;
@@ -35,7 +35,6 @@ const notify = async txobj => {
   q.push(async retry => {
     const r = await got('POST', process.env.NOTIFY_URL, txobj);
     if (r) {
-      db.unlock(txobj.hash);
       logger.info('sending deposit notification success for txid', txobj.hash);
     }
     retry(!r);
