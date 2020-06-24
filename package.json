@@ -1,6 +1,6 @@
 {
   "name": "stellar-wallet",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "stellar wallet",
   "main": "index.js",
   "repository": "https://github.com/uniibu/stellar-wallet",
