@@ -16,8 +16,8 @@
     "start": "pm2 flush && pm2 start index.js --name stellar && pm2 logs stellar",
     "stop": "pm2 stop stellar && pm2 delete stellar && pm2 kill",
     "restart": "yarn stop && pm2 flush && yarn start",
-    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.0 --name \"v2.0.0\" --description \"stellar wallet release\"",
-    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.0 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
+    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.1 --name \"v2.0.1\" --description \"stellar wallet release\"",
+    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.1 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
     "release:now": "yarn release:git && yarn release:upload"
   },
   "dependencies": {
