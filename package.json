@@ -1,6 +1,6 @@
 {
   "name": "stellar-wallet",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "stellar wallet",
   "main": "index.js",
   "repository": "https://github.com/uniibu/stellar-wallet",
@@ -16,8 +16,8 @@
     "start": "pm2 flush && pm2 start index.js --name stellar && pm2 logs stellar",
     "stop": "pm2 stop stellar && pm2 delete stellar && pm2 kill",
     "restart": "yarn stop && pm2 flush && yarn start",
-    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.1 --name \"v2.0.1\" --description \"stellar wallet release\"",
-    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.1 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
+    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.2 --name \"v2.0.2\" --description \"stellar wallet release\"",
+    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.2 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
     "release:now": "yarn release:git && yarn release:upload"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "koa-bouncer": "^6.0.4",
     "koa-router": "^9.0.1",
     "lowdb": "^1.0.0",
-    "phin": "^3.4.0",
+    "node-fetch": "^2.6.0",
     "queuing": "^1.2.0",
     "stellar-sdk": "^5.0.3",
     "winston": "^3.2.1",
