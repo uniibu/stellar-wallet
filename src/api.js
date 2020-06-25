@@ -45,7 +45,7 @@ router.use(async (ctx, next) => {
 });
 router.get('/blocknumber', async ctx => {
   logger.info('RPC /blocknumber was called');
-  const block = getLedger();
+  const block = getLedger().ledger;
   ctx.body = { success: true, block };
 });
 router.get('/balance', async ctx => {

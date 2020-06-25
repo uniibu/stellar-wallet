@@ -14,12 +14,16 @@ const connect = () => {
   return;
 };
 
-exports.updateLedger = ledgerIndex => {
+exports.updateLedger = (ledgerIndex,pagingToken) => {
   connect();
   db.set('ledger', ledgerIndex).write();
+  db.set('cursor', pagingToken).write();
   return;
 };
 exports.getLedger = () => {
   connect();
-  return db.get('ledger').value();
+  return {
+    ledger: db.get('ledger').value() || 0,
+    cursor: db.get('cursor').value() || "now"
+  } 
 };

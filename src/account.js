@@ -11,7 +11,9 @@ async function generateConfig() {
   const createFile = async () => {
     pairObject.horizonServer = process.env.NODE_ENV !== 'production' ? 'https://horizon-testnet.stellar.org' : 'https://horizon.stellar.org';
     pairObject.key = genKey()
-    pairObject.cursor = getLedger()
+    const {ledger,cursor} = getLedger()
+    pairObject.ledger = ledger
+    pairObject.cursor = cursor
     await fs.outputJson(path.resolve(__dirname, '../keys.json'), pairObject, { spaces: 2 })
   }
 

@@ -4,7 +4,7 @@ const storeTx = require('./storeTx')
 module.exports = (config) => {
   const server = new StellarSdk.Server(config.horizonServer);
   server.ledgers()
-  .cursor("now")
+  .cursor(config.cursor.toString())
   .stream({
     onmessage: parseLedger
   })
@@ -18,7 +18,7 @@ module.exports = (config) => {
     })
   function parseLedger(ledgerResponse) {
     logger.info('Syncing.. Block:', ledgerResponse.sequence);
-    storeTx({ledger: ledgerResponse.sequence}, true);
+    storeTx({ledger: ledgerResponse.sequence, cursor: ledgerResponse.paging_token}, true);
   }
   function parseTx(txResponse) {
     if (txResponse.successful === true) {

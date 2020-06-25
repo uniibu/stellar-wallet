@@ -17,13 +17,16 @@ const initCheck = async () => {
   } else {
     logger.info('Keys found. Processing key pair...');
     config = await fs.readJson('./keys.json')
-    config.cursor = getLedger()
+    const {cursor,ledger} = getLedger()
+    config.cursor = cursor
+    config.ledger = ledger
   }
   const infolog = boxen(`Environment: ${process.env.NODE_ENV}
         Withdraw Url: http://${(await getPubIp()).trim()}:8877/withdraw?key=${config.key}
         Wallet Address: ${ config.public}
         Horizer Server: ${ config.horizonServer}
-        Current Block: ${ config.cursor}
+        Current Block: ${ config.ledger}
+        Current Cursor: ${ config.cursor}
         Key: ${ config.key}`.replace(/ {2,}/g, ''), { padding: 1, margin: 1, borderStyle: 'double' });
   infolog.split('\n').forEach(logger.boxen);
   return config;
