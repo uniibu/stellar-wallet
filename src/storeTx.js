@@ -7,8 +7,7 @@ module.exports = (tx, updateOnly = false) => {
     db.updateLedger(tx.ledger);
   } else {
     const lastLedger = db.getLedger();
-    if (lastLedger < tx.ledger) {
-      db.updateLedger(tx.ledger);
+    if (lastLedger <= tx.ledger) {
       delete tx.ledger;
       notify(tx).catch(e => {
         logger.error(e.message)
