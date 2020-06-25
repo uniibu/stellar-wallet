@@ -1,23 +1,31 @@
 const StellarSdk = require('stellar-sdk');
 const logger = require('./logger');
 const storeTx = require('./storeTx')
-module.exports = (config) => {
+const {getter} = require('./request')
+module.exports = async(config) => {
   const server = new StellarSdk.Server(config.horizonServer);
+  const latestLedgerResp = await getter("https://horizon.stellar.org/ledgers",{limit:1,order:"desc"}, true);
+  const ledgerResp = await server.ledgers()
+    .ledger((latestLedgerResp.body._embedded.records[0].sequence - 1000).toFixed()).call();  
+  const cursor = ledgerResp.paging_token
+  logger.info('Checking the last 1000 blocks')
   server.ledgers()
-  .cursor(config.cursor.toString())
+  .cursor(cursor.toString())
   .stream({
     onmessage: parseLedger
   })
   server.payments()
     .forAccount(config.public)
-    .cursor(config.cursor.toString())
+    .cursor(cursor.toString())
     .stream({
       onmessage: async function(message) {
         parseTx(await message.transaction());
       }
     })
   function parseLedger(ledgerResponse) {
-    logger.info('Syncing.. Block:', ledgerResponse.sequence);
+    if(ledgerResponse.sequence % 10 == 0){
+      logger.info('Syncing.. Block:', ledgerResponse.sequence);
+    }
     storeTx({ledger: ledgerResponse.sequence, cursor: ledgerResponse.paging_token}, true);
   }
   function parseTx(txResponse) {

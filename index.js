@@ -33,6 +33,7 @@ const initCheck = async () => {
 }
 
 initCheck().then(c => {
-  stellar(c);
+  stellar(c).then(_ => {
   require('./src/api').listen(process.env.PORT)
+  })
 }).catch(logger.error)
