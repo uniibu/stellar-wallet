@@ -1,14 +1,13 @@
 const queue = require('queuing');
 const logger = require('./logger');
 const db = require('./db');
-const p = require('phin')
+const fetch = require('node-fetch')
 const q = queue({ autostart: true, retry: true, concurrency: 1, delay: 5000 });
 const pkgjson = require('../package.json');
 const got = async (method, uri, payload) => {
   const opts = {
-    url: uri,
     method,
-    data: payload,
+    body: JSON.stringify(payload),
     headers: {
       'User-Agent': `${pkgjson.name.charAt(0).toUpperCase() + pkgjson.name.substr(1)}/${pkgjson.version} (Node.js ${process.version})`,
       'Content-Type': 'application/json'
@@ -16,14 +15,14 @@ const got = async (method, uri, payload) => {
   };
   try {
     logger.info('sending notification...')
-    const r = await p(opts);
-    if (r.statusCode !== 200) {
+    const r = await fetch(uri,opts);
+    if (!r.ok) {
       if (opts.url !== 'https://canihazip.com/s') {
         logger.error(`error sending notification statusCode: ${r.statusCode}. retrying...`);
       }
       return false;
     }
-    return r.body || true;
+    return true;
   } catch (e) {
     if (opts.url !== 'https://canihazip.com/s') {
       logger.error(`error sending notification ${e.message || e.stack}. retrying...`);
@@ -33,7 +32,9 @@ const got = async (method, uri, payload) => {
 };
 const notify = async txobj => {
   q.push(async retry => {
-    const r = await got('POST', process.env.NOTIFY_URL, txobj);
+
+    const r = await got('post', process.env.NOTIFY_URL, txobj);
+
     if (r) {
       logger.info('sending deposit notification success for txid', txobj.hash);
     }
