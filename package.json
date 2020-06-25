@@ -1,6 +1,6 @@
 {
   "name": "stellar-wallet",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "stellar wallet",
   "main": "index.js",
   "repository": "https://github.com/uniibu/stellar-wallet",
@@ -16,9 +16,10 @@
     "start": "pm2 flush && pm2 start index.js --name stellar && pm2 logs stellar",
     "stop": "pm2 stop stellar && pm2 delete stellar && pm2 kill",
     "restart": "yarn stop && pm2 flush && yarn start",
-    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.2 --name \"v2.0.2\" --description \"stellar wallet release\"",
-    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.2 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
-    "release:now": "yarn release:git && yarn release:upload"
+    "release:git": "github-release release --user uniibu --repo stellar-wallet --tag v2.0.3 --name \"v2.0.3\" --description \"stellar wallet release\"",
+    "release:upload": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.3 --name \"bitsler_stellar.sh\" --file bitsler_stellar.sh",
+    "release:update": "github-release upload --user uniibu  --repo stellar-wallet --tag v2.0.3 --name \"stellar-update.sh\" --file stellar-update.sh",
+    "release:now": "yarn release:git && yarn release:upload && yarn release:update"
   },
   "dependencies": {
     "boxen": "^4.0.0",

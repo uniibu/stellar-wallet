@@ -4,3 +4,4 @@ src/db/db.json
 logs/
 .env
 bitsler_stellar.sh
+stellar-update.sh
